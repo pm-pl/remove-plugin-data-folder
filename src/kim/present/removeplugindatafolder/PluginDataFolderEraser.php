@@ -38,10 +38,12 @@ final class PluginDataFolderEraser{
 
     public static function erase(Plugin $plugin) : void{
         $dataFolder = $plugin->getDataFolder();
+        $entries = $dataFolder !== '' ? scandir($dataFolder) : false;
         if(
             file_exists($dataFolder) // If the data folder exists
             && is_dir($dataFolder) // And it's a directory
-            && count(scandir($dataFolder)) === 2 // And it contains only the . and .. folders
+            && $entries !== false
+            && count($entries) === 2 // And it contains only the . and .. folders
         ){
             rmdir($dataFolder); // Remove the data folder
         }
